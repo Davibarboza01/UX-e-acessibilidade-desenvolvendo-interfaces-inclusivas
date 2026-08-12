@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sênior Seguro - Guia Acessível de Segurança Digital</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Configurações globais de acessibilidade e alto contraste */
+    :root {
+      --bg-main: #f8fafc;
+      --text-main: #0f172a;
+      --primary: #1e3a8a;
+      --primary-hover: #1e40af;
+      --accent-alert: #991b1b;
+      --accent-success: #14532d;
+      --card-bg: #ffffff;
+      --border-color: #334155;
+      --focus-ring: #f59e0b;
+      --base-font-size: 20px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-size: var(--base-font-size);
+      line-height: 1.7;
+      color: var(--text-main);
+      background-color: var(--bg-main);
+    }
+
+    /* Foco acessível com teclado (Tab) */
+    :focus-visible {
+      outline: 4px solid var(--focus-ring) !important;
+      outline-offset: 3px !important;
+    }
+
+    /* Suporte a alternância de tamanho de fonte usando apenas CSS (Input Hack) */
+    #zoom-normal:checked ~ .app-wrapper {
+      --base-font-size: 20px;
+    }
+
+    #zoom-grande:checked ~ .app-wrapper {
+      --base-font-size: 24px;
+    }
+
+    #zoom-extragrande:checked ~ .app-wrapper {
+      --base-font-size: 28px;
+    }
+
+    /* Suporte a Modo Alto Contraste via CSS */
+    #contrast-toggle:checked ~ .app-wrapper {
+      --bg-main: #000000;
+      --text-main: #ffffff;
+      --primary: #facc15;
+      --primary-hover: #fef08a;
+      --card-bg: #121212;
+      --border-color: #ffffff;
+      --accent-alert: #ff4d4d;
+      --accent-success: #4dff88;
+    }
+
+    #contrast-toggle:checked ~ .app-wrapper .card-shadow {
+      box-shadow: none;
+      border: 3px solid #ffffff !important;
+    }
+
+    #contrast-toggle:checked ~ .app-wrapper .btn-contrast {
+      background-color: #facc15 !important;
+      color: #000000 !important;
+      font-weight: 800 !important;
+    }
+
+    /* Accordion Interativo Puramente em CSS */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0, 1, 0, 1);
+    }
+
+    .accordion-checkbox:checked ~ .accordion-content {
+      max-height: 1000px;
+      transition: max-height 0.5s ease-in-out;
+    }
+
+    .accordion-checkbox:checked ~ label .arrow-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Estilização para Checkbox de Checklist */
+    .custom-checkbox {
+      width: 32px;
+      height: 32px;
+      accent-color: #1e3a8a;
+      cursor: pointer;
+    }
+
+    /* Botões grandes para melhor área de toque */
+    .btn-touch {
+      min-height: 56px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Sombra legível */
+    .card-shadow {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 2px solid var(--border-color);
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Radio buttons invisíveis para controle de Zoom sem JavaScript -->
+  <input type="radio" id="zoom-normal" name="font-zoom" class="sr-only" checked>
+  <input type="radio" id="zoom-grande" name="font-zoom" class="sr-only">
+  <input type="radio" id="zoom-extragrande" name="font-zoom" class="sr-only">
+  
+  <!-- Checkbox invisível para Modo Alto Contraste -->
+  <input type="checkbox" id="contrast-toggle" class="sr-only">
+
+  <div class="app-wrapper min-h-screen pb-16 transition-colors duration-200">
+
+    <!-- BARRA DE ACESSIBILIDADE SUPERIOR -->
+    <header class="bg-slate-900 text-white p-4 border-b-4 border-amber-500 sticky top-0 z-50">
+      <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-4">
+        <span class="font-bold text-lg md:text-xl flex items-center gap-2">
+          <svg class="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          Acessibilidade visual:
+        </span>
+        
+        <div class="flex flex-wrap items-center gap-3">
+          <!-- Seleção de Tamanho de Texto -->
+          <div class="flex items-center bg-slate-800 p-1.5 rounded-lg border-2 border-slate-600">
+            <span class="text-sm font-semibold mr-2 px-1 text-slate-300">Letra:</span>
+            <label for="zoom-normal" class="cursor-pointer px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 text-white font-bold text-sm border border-slate-500 mr-1 active:scale-95" title="Tamanho Normal de Texto">A</label>
+            <label for="zoom-grande" class="cursor-pointer px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 text-white font-bold text-base border border-slate-500 mr-1 active:scale-95" title="Tamanho Grande de Texto">A+</label>
+            <label for="zoom-extragrande" class="cursor-pointer px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 text-white font-bold text-lg border border-slate-500 active:scale-95" title="Tamanho Muito Grande">A++</label>
+          </div>
+
+          <!-- Botão Alto Contraste -->
+          <label for="contrast-toggle" class="cursor-pointer bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-4 py-2 rounded-lg border-2 border-amber-500 flex items-center gap-2 text-base active:scale-95">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM1 10a9 9 0 1118 0 9 9 0 01-18 0z" clip-rule="evenodd" />
+            </svg>
+            Alto Contraste
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <!-- CABEÇALHO PRINCIPAL DA PÁGINA -->
+    <section class="bg-blue-900 text-white py-10 px-4 mb-8 border-b-8 border-blue-950">
+      <div class="max-w-5xl mx-auto text-center">
+        <div class="inline-flex items-center justify-center p-3 bg-blue-800 rounded-2xl mb-4 border-2 border-blue-400">
+          <svg class="w-12 h-12 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight leading-tight">
+          Sênior Seguro
+        </h1>
+        <p class="text-xl md:text-2xl font-medium text-blue-100 max-w-3xl mx-auto leading-relaxed">
+          Seu aplicativo prático de proteção na internet. Dicas fáceis para navegar sem medo de golpes.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTEÚDO PRINCIPAL (CONTAINER) -->
+    <main class="max-w-5xl mx-auto px-4 space-y-10">
+
+      <!-- NAVEGAÇÃO RÁPIDA (ATALHOS) -->
+      <nav aria-label="Atalhos rápidos" class="p-6 rounded-2xl bg-amber-50 border-4 border-amber-400 card-shadow">
+        <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-amber-950">
+          <svg class="w-7 h-7 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          Escolha o que deseja ver agora:
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+          <a href="#regras-ouro" class="btn-touch btn-contrast bg-blue-800 hover:bg-blue-900 text-white font-bold p-3 rounded-xl border-2 border-blue-950 text-center transition">
+            ⭐ 4 Regras de Ouro
+          </a>
+          <a href="#golpes-comuns" class="btn-touch btn-contrast bg-blue-800 hover:bg-blue-900 text-white font-bold p-3 rounded-xl border-2 border-blue-950 text-center transition">
+            ⚠️ Golpes mais Comuns
+          </a>
+          <a href="#checklist" class="btn-touch btn-contrast bg-blue-800 hover:bg-blue-900 text-white font-bold p-3 rounded-xl border-2 border-blue-950 text-center transition">
+            ☑️ Teste de Segurança
+          </a>
+          <a href="#emergencia" class="btn-touch btn-contrast bg-red-800 hover:bg-red-900 text-white font-bold p-3 rounded-xl border-2 border-red-950 text-center transition">
+            🚨 Caiu num Golpe?
+          </a>
+        </div>
+      </nav>
+
+      <!-- SEÇÃO 1: REGRAS DE OURO -->
+      <section id="regras-ouro" class="scroll-mt-24 space-y-6">
+        <div class="border-b-4 border-blue-800 pb-2">
+          <h2 class="text-2xl md:text-3xl font-black flex items-center gap-3">
+            <span class="bg-blue-800 text-white px-3 py-1 rounded-lg text-xl">1</span>
+            As 4 Regras de Ouro da Segurança
+          </h2>
+          <p class="text-slate-600 font-semibold mt-1">Lembre-se sempre destas recomendações simples no dia a dia:</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Card 1 -->
+          <article class="p-6 rounded-2xl bg-white card-shadow flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3 text-red-700">
+                <svg class="w-9 h-9 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <h3 class="text-xl font-black">1. Senhas são segredos!</h3>
+              </div>
+              <p class="mb-3 font-medium">
+                Sua senha é como a chave da sua porta. Nunca passe sua senha para ninguém por telefone, WhatsApp ou e-mail.
+              </p>
+            </div>
+            <div class="bg-red-50 p-3 rounded-xl border-l-4 border-red-600 font-bold text-red-900 text-base">
+              💡 Dica: Anote suas senhas num caderno mantido guardado dentro de casa, nunca no celular!
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="p-6 rounded-2xl bg-white card-shadow flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3 text-blue-800">
+                <svg class="w-9 h-9 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h32a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h18M7 15h1m4 0h1" />
+                </svg>
+                <h3 class="text-xl font-black">2. Banco não liga pedindo senha</h3>
+              </div>
+              <p class="mb-3 font-medium">
+                Nenhum funcionário de banco liga pedindo para você fazer PIX, transferir dinheiro ou digitar sua senha do cartão.
+              </p>
+            </div>
+            <div class="bg-blue-50 p-3 rounded-xl border-l-4 border-blue-600 font-bold text-blue-900 text-base">
+              💡 Dica: Se ligarem dizendo ser do banco, desligue na hora!
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="p-6 rounded-2xl bg-white card-shadow flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3 text-amber-700">
+                <svg class="w-9 h-9 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <h3 class="text-xl font-black">3. Cuidado com Links azuis</h3>
+              </div>
+              <p class="mb-3 font-medium">
+                Não clique em links de mensagens de pessoas desconhecidas prometendo prêmios, dinheiro fácil ou cobranças urgentes.
+              </p>
+            </div>
+            <div class="bg-amber-50 p-3 rounded-xl border-l-4 border-amber-600 font-bold text-amber-900 text-base">
+              💡 Dica: Na dúvida, peça para um familiar de confiança olhar antes.
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="p-6 rounded-2xl bg-white card-shadow flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3 text-emerald-800">
+                <svg class="w-9 h-9 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                <h3 class="text-xl font-black">4. Pedido de dinheiro de parente</h3>
+              </div>
+              <p class="mb-3 font-medium">
+                Se algum filho ou neto mandar mensagem de número novo pedindo dinheiro urgente, não mande o PIX na hora!
+              </p>
+            </div>
+            <div class="bg-emerald-50 p-3 rounded-xl border-l-4 border-emerald-600 font-bold text-emerald-900 text-base">
+              💡 Dica: Ligue para o número ANTIGO do seu parente ou faça uma chamada de vídeo para confirmar a voz!
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- SEÇÃO 2: GOLPES MAIS COMUNS (ACCORDION) -->
+      <section id="golpes-comuns" class="scroll-mt-24 space-y-6">
+        <div class="border-b-4 border-blue-800 pb-2">
+          <h2 class="text-2xl md:text-3xl font-black flex items-center gap-3">
+            <span class="bg-blue-800 text-white px-3 py-1 rounded-lg text-xl">2</span>
+            Aprenda a Reconhecer os Golpes Frequentes
+          </h2>
+          <p class="text-slate-600 font-semibold mt-1">Toque em cada opção para abrir o passo a passo de como se proteger:</p>
+        </div>
+
+        <div class="space-y-4">
+
+          <!-- Accordion Item 1 -->
+          <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+            <input type="checkbox" id="acc1" class="accordion-checkbox sr-only">
+            <label for="acc1" class="flex justify-between items-center p-5 cursor-pointer bg-slate-50 hover:bg-slate-100 border-b-2 border-slate-200">
+              <span class="font-black text-xl flex items-center gap-3 text-slate-900">
+                <span class="text-2xl">📱</span> Golpe do "Novo Número de WhatsApp"
+              </span>
+              <svg class="arrow-icon w-8 h-8 text-slate-700 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" />
+              </svg>
+            </label>
+            <div class="accordion-content">
+              <div class="p-6 space-y-3 bg-white">
+                <p class="font-bold text-red-800">Como funciona o golpe:</p>
+                <p>O golpista coloca a foto do seu filho, neto ou amigo em um número desconhecido e envia a mensagem: <em>"Oi pai/mãe, troquei de número, me salva aí! Preciso pagar uma conta urgente mas meu aplicativo quebrou."</em></p>
+                <div class="bg-amber-100 border-2 border-amber-400 p-4 rounded-xl">
+                  <p class="font-bold text-amber-900">O que você DEVE fazer:</p>
+                  <ul class="list-disc list-inside space-y-1 mt-1 font-semibold text-amber-950">
+                    <li>NUNCA faça transferência ou PIX imediatamente.</li>
+                    <li>Ligue para o número antigo do seu parente.</li>
+                    <li>Pergunte algo que só seu parente saberia responder (ex: "Qual o nome do nosso cachorro?").</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion Item 2 -->
+          <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+            <input type="checkbox" id="acc2" class="accordion-checkbox sr-only">
+            <label for="acc2" class="flex justify-between items-center p-5 cursor-pointer bg-slate-50 hover:bg-slate-100 border-b-2 border-slate-200">
+              <span class="font-black text-xl flex items-center gap-3 text-slate-900">
+                <span class="text-2xl">🏦</span> Golpe da Falsa Central do Banco
+              </span>
+              <svg class="arrow-icon w-8 h-8 text-slate-700 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" />
+              </svg>
+            </label>
+            <div class="accordion-content">
+              <div class="p-6 space-y-3 bg-white">
+                <p class="font-bold text-red-800">Como funciona o golpe:</p>
+                <p>Você recebe uma ligação automatizada dizendo: <em>"Identificamos uma compra suspeita de R$ 2.000 nas Lojas Americanas. Digite 1 para cancelar ou fale com o atendente."</em> Ao falar com a pessoa, ela finge ser do banco e pede para você fazer um PIX de teste ou passar sua senha.</p>
+                <div class="bg-amber-100 border-2 border-amber-400 p-4 rounded-xl">
+                  <p class="font-bold text-amber-900">O que você DEVE fazer:</p>
+                  <ul class="list-disc list-inside space-y-1 mt-1 font-semibold text-amber-950">
+                    <li>Desligue o telefone na hora!</li>
+                    <li>Ligue você mesmo para o número que fica no verso do seu cartão bancário.</li>
+                    <li>Lembre-se: O banco nunca pede para fazer PIX para cancelar compras.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion Item 3 -->
+          <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+            <input type="checkbox" id="acc3" class="accordion-checkbox sr-only">
+            <label for="acc3" class="flex justify-between items-center p-5 cursor-pointer bg-slate-50 hover:bg-slate-100 border-b-2 border-slate-200">
+              <span class="font-black text-xl
